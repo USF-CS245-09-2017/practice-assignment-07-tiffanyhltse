@@ -1,5 +1,3 @@
-import java.util.*;
-
 public class LinkedList<T> implements List<T> {
     private Node head;
     private int size;
@@ -32,7 +30,6 @@ public class LinkedList<T> implements List<T> {
 
     }
 
-
     public void add(T item){ //add item to end of linked list
         if (head == null){ //if linked list is empty
             Node <T> newNode = new Node(item); //create new node
@@ -52,25 +49,26 @@ public class LinkedList<T> implements List<T> {
     }
 
     public void add(int pos, T item){
-        //error check
+        //error check first
         // when the position of the array that you want to add an element into is not reachable given the LinkedList's size
-        if (pos >= size || pos<= 0){
-            throw new IndexOutOfBoundsException();
-        }
 
-        ++size;
-        if (pos == 0){ //if the new node is the first object in the linked list
+        if (pos >= 0 && pos <= size){
             Node<T> node = new Node(item);
-            node.setNext(head);
-            head = node;
-        } else {
-            Node prev = head;
-            for(int i = 0; i < pos - 1; i++){
-                prev = prev.getNext();
+            if (pos == 0){ //if given position to add an item is the very front of the linked list
+                //set head to be the new node object and increment the size
+                node.setNext(head);
+                head = node;
+                size++;
+            } else { //if given position to add an item is the size
+                Node prev = head, curr = prev.getNext();
+                for (int i = 0; i < pos - 1; i++) {
+                    prev = prev.getNext();
+                    curr = curr.getNext();
+                }
+                node.setNext(curr);
+                prev.setNext(node);
+                size++;
             }
-            Node<T> newNode = new Node(item);
-            newNode.setNext(prev.getNext());
-            prev.setNext(newNode);
         }
 
     }
@@ -119,15 +117,4 @@ public class LinkedList<T> implements List<T> {
         return size;
 
     }
-
-
-
-
-
-
-
-
-
-
-
 }
